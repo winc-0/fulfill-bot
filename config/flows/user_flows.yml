@@ -1,0 +1,280 @@
+# 业务对话流程。改这里不用改代码——这是"运营可配"的部分。
+#
+# 步骤类型：
+#   start   流程入口
+#   collect 收集一个槽位；槽位已有值就跳过，没有就念 response.text 并停下来等
+#   action  调用已注册的动作（见 app/flows/schema.py 的 VALID_ACTIONS）
+#   end     结束
+# next 支持三种写法：单个步骤 id、"if/then + else" 的条件列表、空列表（结束）
+
+slots:
+  tracking_number:
+    type: text
+    label: 运单号
+    description: 用户要处理的运单号，YD 开头
+
+  shipment_status:
+    type: text
+    label: 运单状态
+    description: 运单当前状态，如已出库、干线运输中、派送中、已妥投
+
+  shipment_summary:
+    type: text
+    label: 运单摘要
+    description: 运单的一句话说明（托寄物、重量、承运商、保价、时效）
+
+  carrier:
+    type: text
+    label: 承运商
+
+  promise_time:
+    type: text
+    label: 承诺时效
+
+  latest_trace:
+    type: text
+    label: 最新轨迹
+    description: 最新的一个轨迹节点与描述
+
+  claim_type:
+    type: text
+    label: 异常类型
+    description: 破损 / 丢失 / 延误
+
+  claim_reason:
+    type: text
+    label: 异常情况说明
+
+  claim_id:
+    type: text
+    label: 理赔单号
+
+  new_address:
+    type: text
+    label: 新的派送地址
+
+  change_id:
+    type: text
+    label: 改址单号
+
+  urge_id:
+    type: text
+    label: 催派工单号
+
+flows:
+  onboarding:
+    name: 欢迎引导
+    description: 用户刚打开会话时的问候，并说明能处理哪几类问题。由系统主动触发。
+    steps:
+      - id: start
+        type: start
+        next: respond
+
+      - id: respond
+        type: action
+        action: action_response
+        args:
+          text: "你好，我是履约客服助手。可以帮你查运单状态、看物流轨迹、改派送地址、催派送，或者提交异常件理赔。"
+          suggestions:
+            - 帮我查一下运单 YD20260410001 到哪了
+            - 我要改派送地址
+            - 包裹破损了怎么赔
+            - 转人工
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  shipment_status_query:
+    name: 运单状态查询
+    description: 查询某张运单当前的处理状态（已下单、仓库备货、已出库、干线运输中、派送中、已妥投）。
+    steps:
+      - id: start
+        type: start
+        next: ask_tracking_number
+
+      - id: ask_tracking_number
+        type: collect
+        slot_name: tracking_number
+        response:
+          text: "请告诉我运单号，我来帮你查。"
+        next: lookup
+
+      - id: lookup
+        type: action
+        action: action_lookup_shipment_status
+        next: respond
+
+      - id: respond
+        type: action
+        action: action_response
+        args:
+          text: "运单 {{ slots.tracking_number }} 当前状态是「{{ slots.shipment_status }}」。{{ slots.shipment_summary }}"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  tracking_query:
+    name: 物流轨迹查询
+    description: 查询运单的承运商与最新物流轨迹节点。
+    steps:
+      - id: start
+        type: start
+        next: ask_tracking_number
+
+      - id: ask_tracking_number
+        type: collect
+        slot_name: tracking_number
+        response:
+          text: "告诉我要查哪张运单的轨迹，运单号是？"
+        next: lookup
+
+      - id: lookup
+        type: action
+        action: action_lookup_tracking
+        next: respond
+
+      - id: respond
+        type: action
+        action: action_response
+        args:
+          text: "运单 {{ slots.tracking_number }} 由{{ slots.carrier }}承运，最新进度：{{ slots.latest_trace }}。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  claim_request:
+    name: 异常件理赔
+    description: 帮用户提交异常件（破损 / 丢失 / 延误）理赔申请。需要运单号和异常情况说明，提交后返回理赔单号。
+    steps:
+      - id: start
+        type: start
+        next: ask_tracking_number
+
+      - id: ask_tracking_number
+        type: collect
+        slot_name: tracking_number
+        response:
+          text: "可以，请告诉我需要报异常的那张运单号。"
+        next: verify
+
+      - id: verify
+        type: action
+        action: action_lookup_shipment_status
+        next: ask_reason
+
+      - id: ask_reason
+        type: collect
+        slot_name: claim_reason
+        response:
+          text: "请简单说一下异常情况和损失，方便定责理赔。"
+        next: submit
+
+      - id: submit
+        type: action
+        action: action_submit_claim
+        next: respond
+
+      - id: respond
+        type: action
+        action: action_response
+        args:
+          text: "已为运单 {{ slots.tracking_number }} 提交理赔申请，理赔单号 {{ slots.claim_id }}，类型：{{ slots.claim_type }}，情况：{{ slots.claim_reason }}。定责结果会通过短信通知你。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  address_change:
+    name: 改派送地址
+    description: 修改运单的派送地址。运单已进入派送环节后会被中台拒绝。
+    steps:
+      - id: start
+        type: start
+        next: ask_tracking_number
+
+      - id: ask_tracking_number
+        type: collect
+        slot_name: tracking_number
+        response:
+          text: "要改哪张运单的派送地址？把运单号给我。"
+        next: ask_address
+
+      - id: ask_address
+        type: collect
+        slot_name: new_address
+        response:
+          text: "新的派送地址是什么？写详细一点，方便快递员找到。"
+        next: submit
+
+      - id: submit
+        type: action
+        action: action_change_address
+        next: respond
+
+      - id: respond
+        type: action
+        action: action_response
+        args:
+          text: "已为运单 {{ slots.tracking_number }} 提交改址申请（单号 {{ slots.change_id }}），新地址：{{ slots.new_address }}。网点会按新地址派送。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  delivery_reminder:
+    name: 催派送
+    description: 对在途或滞留的运单下发催派工单，让网点优先安排派送。
+    steps:
+      - id: start
+        type: start
+        next: ask_tracking_number
+
+      - id: ask_tracking_number
+        type: collect
+        slot_name: tracking_number
+        response:
+          text: "要催哪张运单？把运单号给我就行。"
+        next: remind
+
+      - id: remind
+        type: action
+        action: action_urge_delivery
+        next: respond
+
+      - id: respond
+        type: action
+        action: action_response
+        args:
+          text: "已经帮你对运单 {{ slots.tracking_number }} 下发了催派工单（单号 {{ slots.urge_id }}），网点会优先安排派送。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  human_handoff:
+    name: 转人工
+    description: 用户明确要求找人工客服，或情绪激烈、问题超出能力范围时转接。
+    steps:
+      - id: start
+        type: start
+        next: respond
+
+      - id: respond
+        type: action
+        action: action_response
+        args:
+          text: "好的，我这就帮你转接人工客服，同时把前面的对话摘要一并转过去，你不用再重复一遍。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
