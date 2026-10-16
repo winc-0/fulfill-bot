@@ -1,0 +1,169 @@
+# 系统应答流程。它们不是"业务"，而是状态变迁时给用户的交代：
+# 新任务开始 / 任务恢复 / 任务被中断 / 任务被取消 / 无法处理（走澄清）。
+#
+# 这些文案单独抽出来的好处：状态机只管转移，说什么话由配置决定，
+# 换语气、换品牌口径都不用碰引擎代码。
+
+flows:
+  system_task_started:
+    name: 新任务开始
+    description: 用户开启了一个新任务时的确认语。
+    steps:
+      - id: start
+        type: start
+        next: acknowledge
+
+      - id: acknowledge
+        type: action
+        action: action_response
+        args:
+          mode: static
+          text: "好的，我们来看{{ context.started_flow_name }}。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  system_task_resumed:
+    name: 任务恢复
+    description: 用户回到之前挂起的任务时的确认语。
+    steps:
+      - id: start
+        type: start
+        next: acknowledge
+
+      - id: acknowledge
+        type: action
+        action: action_response
+        args:
+          mode: static
+          text: "好的，我们接着刚才的{{ context.resumed_flow_name }}继续说。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  system_task_interrupted:
+    name: 任务中断
+    description: 当前任务被新任务打断，先把旧的挂起。
+    steps:
+      - id: start
+        type: start
+        next: acknowledge
+
+      - id: acknowledge
+        type: action
+        action: action_response
+        args:
+          mode: static
+          text: "{{ context.interrupted_flow_name }}我先帮你放一放，先处理{{ context.started_flow_name }}。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  system_task_canceled:
+    name: 任务取消
+    description: 用户主动放弃当前任务。
+    steps:
+      - id: start
+        type: start
+        next: acknowledge
+
+      - id: acknowledge
+        type: action
+        action: action_response
+        args:
+          mode: static
+          text: "好的，{{ context.canceled_flow_name }}就不办了。如果之后还想处理，跟我说一声就行。"
+        next: end
+
+      - id: end
+        type: end
+        next: []
+
+  system_cannot_handle:
+    name: 无法处理
+    description: 意图不明、能力不支持或知识库没答案时，按原因给不同的回应。
+    steps:
+      - id: start
+        type: start
+        next:
+          - if: "context.get('reason') == 'clarification_rejected'"
+            then: clarification_rejected
+          - if: "context.get('reason') == 'not_supported'"
+            then: not_supported
+          - if: "context.get('reason') == 'no_relevant_answer'"
+            then: no_relevant_answer
+          - else: ask_rephrase
+
+      - id: clarification_rejected
+        type: action
+        action: action_response
+        args:
+          mode: rephrase
+          text: "看来我刚才理解偏了。你是想查运单、查物流轨迹、改派送地址、催派送，还是报异常件理赔？"
+          prompt: |
+            你是仓配履约客服助手，语气自然、简洁，只说一句话。
+            根据下面的建议回复改写，保持原意，不要扩写，不要加新信息。
+            对话上下文：
+            {history}
+            用户最后一句：{user_message}
+            建议回复：{current_response}
+            改写结果：
+        next: end
+
+      - id: not_supported
+        type: action
+        action: action_response
+        args:
+          mode: rephrase
+          text: "这个能力我暂时还接不了，我可以帮你转人工客服继续处理。"
+          prompt: |
+            你是仓配履约客服助手，语气自然、简洁，只说一句话。
+            根据下面的建议回复改写，保持原意，不要扩写，不要加新信息。
+            对话上下文：
+            {history}
+            用户最后一句：{user_message}
+            建议回复：{current_response}
+            改写结果：
+        next: end
+
+      - id: no_relevant_answer
+        type: action
+        action: action_response
+        args:
+          mode: rephrase
+          text: "这个我没查到明确说法。你可以换个问法，或者我帮你转接人工确认。"
+          prompt: |
+            你是仓配履约客服助手，语气自然、简洁，只说一句话。
+            根据下面的建议回复改写，保持原意，不要扩写，不要加新信息。
+            对话上下文：
+            {history}
+            用户最后一句：{user_message}
+            建议回复：{current_response}
+            改写结果：
+        next: end
+
+      - id: ask_rephrase
+        type: action
+        action: action_response
+        args:
+          mode: rephrase
+          text: "抱歉我没太听明白。你想查运单、查物流轨迹、改派送地址、催派送，还是报异常件理赔？"
+          prompt: |
+            你是仓配履约客服助手，语气自然、简洁，只说一句话。
+            根据下面的建议回复改写，保持原意，不要扩写，不要加新信息。
+            对话上下文：
+            {history}
+            用户最后一句：{user_message}
+            建议回复：{current_response}
+            改写结果：
+        next: end
+
+      - id: end
+        type: end
+        next: []
