@@ -451,7 +451,7 @@ async function copyBotText(botMsg) {
         <header class="chat-header">
           <div class="header-content">
             <div class="header-info">
-              <h1>履约客服助手 Fulfill-Bot</h1>
+              <h1>履约客服助手</h1>
               <div class="service-info">
                 <div class="service-avatar-wrapper">
                   <img :src="customerService.avatar" class="service-avatar" />
