@@ -1,7 +1,7 @@
 [project]
 name = "zhifu"
 version = "0.1.0"
-description = "履约客服助手 Fulfill-Bot — 有状态的仓配履约客服对话智能体"
+description = "履约客服助手 — 有状态的仓配履约客服对话智能体"
 requires-python = ">=3.11,<3.13"
 dependencies = [
     "fastapi>=0.115",

@@ -75,7 +75,7 @@ async def lifespan(app: FastAPI):
 
 
 def create_app() -> FastAPI:
-    app = FastAPI(title="履约客服助手 Fulfill-Bot", version="0.1.0", lifespan=lifespan)
+    app = FastAPI(title="履约客服助手", version="0.1.0", lifespan=lifespan)
     app.add_middleware(
         CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
     )

@@ -47,7 +47,7 @@ async def run_variant(name: str, sessions: list[dict], engine: DialogueEngine) -
 
 def write_report(out_dir: Path, results: dict, records_by_variant: dict) -> None:
     lines = [
-        "# 履约客服助手 Fulfill-Bot 会话级评测",
+        "# 履约客服助手 会话级评测",
         "",
         f"- 时间：{datetime.now():%Y-%m-%d %H:%M}",
         f"- 脚本：`eval/sessions.jsonl`，{len(next(iter(records_by_variant.values())))} 段多轮会话",

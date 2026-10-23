@@ -39,7 +39,7 @@ async def main() -> None:
         engine.repo.reset(args.sender)
 
     mode = "模型规划" if settings.llm.enabled else "规则规划（未配置 LLM_API_KEY）"
-    print(f"履约客服助手 Fulfill-Bot · {mode} · 用户 {args.sender}（Ctrl+C 或 exit 退出）\n")
+    print(f"履约客服助手 · {mode} · 用户 {args.sender}（Ctrl+C 或 exit 退出）\n")
 
     while True:
         try:
