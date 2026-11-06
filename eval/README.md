@@ -23,6 +23,8 @@ python -m eval.run_eval --run-id final
 
 前提：**模拟中台要在跑**（`python -m scripts.dev`，或单独 `python -m services.commerce.app`），否则所有动作都会失败。评测会自己重置对话状态，不需要手动清库。
 
+单独启动中台时，先运行 `python -m services.commerce.seed` 灌入种子数据，否则查不到运单。`python -m scripts.dev` 会自动完成这一步。
+
 产出在 `eval/results/<run_id>/`：
 
 - `report.md` —— 总表 + 分组 + 失败明细（含每轮的实际动作、置信度、来源、回复片段）

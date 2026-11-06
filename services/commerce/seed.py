@@ -201,3 +201,9 @@ def reset() -> None:
 
 
 __all__ = ["seed", "reset"]
+
+
+if __name__ == "__main__":
+    # scripts.dev 用 python -m services.commerce.seed 灌种子数据
+    seed()
+    print("中台种子数据已就绪")

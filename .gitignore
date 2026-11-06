@@ -8,7 +8,10 @@ data/*.db
 data/*.db-journal
 data/*.sqlite3
 logs/
-eval/results/
+eval/results/*
+!eval/results/full/
+!eval/results/final/
+!eval/results/final2/
 
 # Python
 __pycache__/

@@ -1,0 +1,1213 @@
+[
+ {
+  "id": "s01",
+  "group": "single_turn",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "帮我查一下 A20260408002 到哪了",
+    "action": "start",
+    "flow_id": "logistics_tracking",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户提供了订单号并要求查询物流状态，符合物流查询流程",
+    "transitions": [
+     "logistics_tracking:new->active",
+     "logistics_tracking:active->done"
+    ],
+    "replies": [
+     "订单 A20260408002 由顺丰速运配送，运单号 SF1234567890。当前进度：运输中（最新：快件已到达上海转运中心）。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 1.891474100004416
+ },
+ {
+  "id": "s02",
+  "group": "single_turn",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "订单 A20260410001 现在什么状态",
+    "action": "start",
+    "flow_id": "order_status_query",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确提供了订单号并询问状态，属于订单状态查询业务流程",
+    "transitions": [
+     "order_status_query:new->active",
+     "order_status_query:active->done"
+    ],
+    "replies": [
+     "订单 A20260410001 当前状态是「待发货」。共 1 件商品，金额 8999.00 元，下单时间 2026-04-10。商家正在备货，预计 24 小时内发出。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 1.5253616999834776
+ },
+ {
+  "id": "s03",
+  "group": "single_turn",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "A20260409004 现在什么情况",
+    "action": "start",
+    "flow_id": "order_status_query",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户提供了订单号并询问当前状态，属于订单状态查询业务流程",
+    "transitions": [
+     "order_status_query:new->active",
+     "order_status_query:active->done"
+    ],
+    "replies": [
+     "订单 A20260409004 当前状态是「已完成」。共 1 件商品，金额 399.00 元，下单时间 2026-04-09。订单已签收完成。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 1.839725800033193
+ },
+ {
+  "id": "s04",
+  "group": "single_turn",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "SKU10002 这个耳机多少钱",
+    "action": "start",
+    "flow_id": "product_inquiry",
+    "source": "llm",
+    "confidence": 0.9,
+    "reason": "用户询问商品价格，属于规则类问题，不涉及订单操作，且未提供订单号，因此应归类为 answer。",
+    "transitions": [
+     "product_inquiry:new->active",
+     "product_inquiry:active->done"
+    ],
+    "replies": [
+     "参数：颜色 云雾白，降噪 主动降噪，续航 8 小时；库存状态：有货。",
+     "声动 Air 无线耳机，价格 149.00 元。想看看同类的其它选择吗？"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 1.3481450999970548
+ },
+ {
+  "id": "s05",
+  "group": "single_turn",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "A20260403006 的订单状态是什么",
+    "action": "start",
+    "flow_id": "order_status_query",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确提供了订单号并询问其状态，符合订单状态查询流程",
+    "transitions": [
+     "order_status_query:new->active",
+     "order_status_query:active->done"
+    ],
+    "replies": [
+     "订单 A20260403006 当前状态是「已取消」。共 1 件商品，金额 5299.00 元，下单时间 2026-04-03。订单已取消，款项已原路退回。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 1.8169805000070482
+ },
+ {
+  "id": "s06",
+  "group": "slot_filling",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "我要申请退款",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确表达要申请退款，属于业务流程，需收集订单号和退款原因",
+    "transitions": [
+     "refund_request:new->active"
+    ],
+    "replies": [
+     "可以，请告诉我需要退款的订单号。"
+    ]
+   },
+   {
+    "idx": 2,
+    "text": "A20260410001",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户在追问订单号后提供了完整的订单号，且当前任务为退款申请，应继续执行该流程",
+    "transitions": [
+     "refund_request:active->active（补槽）"
+    ],
+    "replies": [
+     "请简单说一下退款原因，方便审核。"
+    ]
+   },
+   {
+    "idx": 3,
+    "text": "不想要了",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户已提供订单号和退款原因，符合退款申请流程的完整输入，可直接提交",
+    "transitions": [
+     "refund_request:active->active（补槽）",
+     "refund_request:active->done"
+    ],
+    "replies": [
+     "已为订单 A20260410001 提交退款申请，退款单号 R20261020151420806A2A，原因：不想要了。审核结果会通过短信通知你。"
+    ]
+   }
+  ],
+  "route_hits": 3,
+  "route_total": 3,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 4.327516700024717
+ },
+ {
+  "id": "s07",
+  "group": "slot_filling",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "我要催发货",
+    "action": "start",
+    "flow_id": "shipping_reminder",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确表达要催发货，属于 shipping_reminder 流程，且未提供订单号，需后续追问",
+    "transitions": [
+     "shipping_reminder:new->active"
+    ],
+    "replies": [
+     "要催哪个订单？把订单号给我就行。"
+    ]
+   },
+   {
+    "idx": 2,
+    "text": "A20260410001",
+    "action": "start",
+    "flow_id": "shipping_reminder",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户提供了订单号，且当前任务为催发货，符合业务流程要求",
+    "transitions": [
+     "shipping_reminder:active->active（补槽）",
+     "shipping_reminder:active->done"
+    ],
+    "replies": [
+     "已经帮你对订单 A20260410001 提交了发货提醒（单号 U20261020151422EB9C92），商家会尽快处理。"
+    ]
+   }
+  ],
+  "route_hits": 2,
+  "route_total": 2,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 2.58124199998565
+ },
+ {
+  "id": "s08",
+  "group": "slot_filling",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "申请退款",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.9,
+    "reason": "用户明确表达要申请退款，属于业务流程，需收集订单号和退款原因",
+    "transitions": [
+     "refund_request:new->active"
+    ],
+    "replies": [
+     "可以，请告诉我需要退款的订单号。"
+    ]
+   },
+   {
+    "idx": 2,
+    "text": "A20260407005",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户提供了订单号，且当前任务为退款申请，属于在回答上一轮追问，应继续该流程",
+    "transitions": [
+     "refund_request:active->active（补槽）"
+    ],
+    "replies": [
+     "请简单说一下退款原因，方便审核。"
+    ]
+   },
+   {
+    "idx": 3,
+    "text": "拍错了",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户在回答上一轮的追问时，明确提供了退款原因，符合业务流程的完整输入条件",
+    "transitions": [
+     "refund_request:active->active（补槽）",
+     "refund_request:active->done"
+    ],
+    "replies": [
+     "已为订单 A20260407005 提交退款申请，退款单号 R20261020151426D28456，原因：拍错了。审核结果会通过短信通知你。"
+    ]
+   }
+  ],
+  "route_hits": 3,
+  "route_total": 3,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 4.091618600010406
+ },
+ {
+  "id": "s09",
+  "group": "coreference",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "查一下 A20260408002",
+    "action": "start",
+    "flow_id": "order_status_query",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确提到订单号 A20260408002 并要求查询，符合订单状态查询流程",
+    "transitions": [
+     "order_status_query:new->active",
+     "order_status_query:active->done"
+    ],
+    "replies": [
+     "订单 A20260408002 当前状态是「运输中」。共 1 件商品，金额 149.00 元，下单时间 2026-04-08。包裹已发出，正在配送途中。"
+    ]
+   },
+   {
+    "idx": 2,
+    "text": "那这个能退吗",
+    "action": "answer",
+    "flow_id": "",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户询问退款是否可行，属于规则类问题，未提及新订单号且当前订单状态为运输中，系统可基于已有信息判断退款政策",
+    "transitions": [],
+    "replies": [
+     "得看具体商品和情况哈～比如是不是定制类、贴身衣物，或者已经拆封、激活过。签收没超过7天，商品没用过、包装配件都在的话，一般可以无理由退。要是有质量问题或发错货，退换运费我们来承担。"
+    ]
+   },
+   {
+    "idx": 3,
+    "text": "直接帮我申请退款",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确要求申请退款，且当前正在处理的订单为 A20260408002，符合 refund_request 流程的触发条件，需填写订单号并等待用户补充退款原因。",
+    "transitions": [
+     "refund_request:new->active"
+    ],
+    "replies": [
+     "请简单说一下退款原因，方便审核。"
+    ]
+   },
+   {
+    "idx": 4,
+    "text": "不想要了",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户已明确表达退款原因，且当前任务为退款申请流程，需补全退款原因后提交",
+    "transitions": [
+     "refund_request:active->active（补槽）",
+     "refund_request:active->done"
+    ],
+    "replies": [
+     "已为订单 A20260408002 提交退款申请，退款单号 R20261020151435179B36，原因：不想要了。审核结果会通过短信通知你。"
+    ]
+   }
+  ],
+  "route_hits": 4,
+  "route_total": 4,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 8.113429200020619
+ },
+ {
+  "id": "s10",
+  "group": "coreference",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "帮我查下 A20260408002 的物流",
+    "action": "start",
+    "flow_id": "logistics_tracking",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确提供了订单号 A20260408002 并要求查询物流，符合 logistics_tracking 流程的触发条件",
+    "transitions": [
+     "logistics_tracking:new->active",
+     "logistics_tracking:active->done"
+    ],
+    "replies": [
+     "订单 A20260408002 由顺丰速运配送，运单号 SF1234567890。当前进度：运输中（最新：快件已到达上海转运中心）。"
+    ]
+   },
+   {
+    "idx": 2,
+    "text": "运单号是多少",
+    "action": "start",
+    "flow_id": "logistics_tracking",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户追问当前订单的运单号，属于对已知订单的物流信息进一步查询，应继续使用 logistics_tracking 流程并沿用已有订单号",
+    "transitions": [
+     "logistics_tracking:new->active",
+     "logistics_tracking:active->done"
+    ],
+    "replies": [
+     "订单 A20260408002 由顺丰速运配送，运单号 SF1234567890。当前进度：运输中（最新：快件已到达上海转运中心）。"
+    ]
+   }
+  ],
+  "route_hits": 2,
+  "route_total": 2,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 4.003109599987511
+ },
+ {
+  "id": "s11",
+  "group": "coreference",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "我要退款",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.9,
+    "reason": "用户明确表达要退款，属于退款申请流程，需收集订单号和退款原因",
+    "transitions": [
+     "refund_request:new->active"
+    ],
+    "replies": [
+     "可以，请告诉我需要退款的订单号。"
+    ]
+   },
+   {
+    "idx": 2,
+    "text": "A20260409004",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户在追问订单号后提供了完整的订单号，符合业务流程的继续条件",
+    "transitions": [
+     "refund_request:active->active（补槽）"
+    ],
+    "replies": [
+     "请简单说一下退款原因，方便审核。"
+    ]
+   },
+   {
+    "idx": 3,
+    "text": "算了先不退了",
+    "action": "cancel",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确表示放弃当前正在办理的退款申请流程",
+    "transitions": [
+     "refund_request:active->canceled"
+    ],
+    "replies": [
+     "好的，退款申请就不办了。如果之后还想处理，跟我说一声就行。"
+    ]
+   },
+   {
+    "idx": 4,
+    "text": "继续刚才的退款",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.8,
+    "reason": "用户明确表示要继续之前被取消的退款申请，属于恢复挂起的业务流程",
+    "transitions": [
+     "refund_request:new->active"
+    ],
+    "replies": [
+     "请简单说一下退款原因，方便审核。"
+    ]
+   }
+  ],
+  "route_hits": 4,
+  "route_total": 4,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 4.815288699988741
+ },
+ {
+  "id": "s12",
+  "group": "interrupt_resume",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "我要退款",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.9,
+    "reason": "用户明确表达退款意图，需启动退款申请流程，但尚未提供订单号和退款原因，故 slots 留空等待补充",
+    "transitions": [
+     "refund_request:new->active"
+    ],
+    "replies": [
+     "可以，请告诉我需要退款的订单号。"
+    ]
+   },
+   {
+    "idx": 2,
+    "text": "先查一下 A20260408002 的物流",
+    "action": "start",
+    "flow_id": "logistics_tracking",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确要求查询订单 A20260408002 的物流信息，属于物流查询业务流程，且订单号已提供",
+    "transitions": [
+     "refund_request:active->paused（被 logistics_tracking 打断）",
+     "logistics_tracking:active->done"
+    ],
+    "replies": [
+     "退款申请我先帮你放一放，先处理物流查询。",
+     "订单 A20260408002 由顺丰速运配送，运单号 SF1234567890。当前进度：运输中（最新：快件已到达上海转运中心）。"
+    ]
+   },
+   {
+    "idx": 3,
+    "text": "继续刚才的退款",
+    "action": "resume",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确表示要继续之前被中断的退款申请流程，且已知订单号与挂起任务一致",
+    "transitions": [
+     "refund_request:paused->active（从 ask_order_number 续跑）"
+    ],
+    "replies": [
+     "好的，我们接着刚才的退款申请继续说。",
+     "请简单说一下退款原因，方便审核。"
+    ]
+   },
+   {
+    "idx": 4,
+    "text": "不想要了",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确回答了退款原因，且当前任务为退款申请流程，已知订单号匹配",
+    "transitions": [
+     "refund_request:active->active（补槽）",
+     "refund_request:active->done"
+    ],
+    "replies": [
+     "已为订单 A20260408002 提交退款申请，退款单号 R20261020151450BB3C24，原因：不想要了。审核结果会通过短信通知你。"
+    ]
+   }
+  ],
+  "route_hits": 4,
+  "route_total": 4,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 6.131574500002898
+ },
+ {
+  "id": "s13",
+  "group": "interrupt_resume",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "查一下 A20260408002 的物流",
+    "action": "start",
+    "flow_id": "logistics_tracking",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确提供了订单号并要求查询物流，符合物流查询流程的触发条件",
+    "transitions": [
+     "logistics_tracking:new->active",
+     "logistics_tracking:active->done"
+    ],
+    "replies": [
+     "订单 A20260408002 由顺丰速运配送，运单号 SF1234567890。当前进度：运输中（最新：快件已到达上海转运中心）。"
+    ]
+   },
+   {
+    "idx": 2,
+    "text": "顺便帮我催一下 A20260410001 发货",
+    "action": "start",
+    "flow_id": "shipping_reminder",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确要求对订单 A20260410001 进行催发货操作，属于 shipping_reminder 流程，且订单号已提供",
+    "transitions": [
+     "shipping_reminder:new->active",
+     "shipping_reminder:active->done"
+    ],
+    "replies": [
+     "已经帮你对订单 A20260410001 提交了发货提醒（单号 U202610201514535343A1），商家会尽快处理。"
+    ]
+   }
+  ],
+  "route_hits": 2,
+  "route_total": 2,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 3.4007093000109307
+ },
+ {
+  "id": "s14",
+  "group": "cancel",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "我要退款",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.9,
+    "reason": "用户明确表达退款需求，需启动退款申请流程，但尚未提供订单号和退款原因，因此 slots 留空待填充",
+    "transitions": [
+     "refund_request:new->active"
+    ],
+    "replies": [
+     "可以，请告诉我需要退款的订单号。"
+    ]
+   },
+   {
+    "idx": 2,
+    "text": "A20260405003",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户在追问订单号后提供了完整的订单号，符合业务流程继续的条件",
+    "transitions": [
+     "refund_request:active->active（补槽）"
+    ],
+    "replies": [
+     "请简单说一下退款原因，方便审核。"
+    ]
+   },
+   {
+    "idx": 3,
+    "text": "算了先不退了",
+    "action": "cancel",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确表示放弃当前正在办理的退款申请流程",
+    "transitions": [
+     "refund_request:active->canceled"
+    ],
+    "replies": [
+     "好的，退款申请就不办了。如果之后还想处理，跟我说一声就行。"
+    ]
+   }
+  ],
+  "route_hits": 3,
+  "route_total": 3,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 3.4808655999950133
+ },
+ {
+  "id": "s15",
+  "group": "cancel",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "我要退款",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确表达退款意图，需启动退款申请流程，但尚未提供订单号和退款原因，因此 slots 留空等待补充",
+    "transitions": [
+     "refund_request:new->active"
+    ],
+    "replies": [
+     "可以，请告诉我需要退款的订单号。"
+    ]
+   },
+   {
+    "idx": 2,
+    "text": "不办了",
+    "action": "cancel",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确表示不办理退款，属于放弃当前正在处理的业务流程",
+    "transitions": [
+     "refund_request:active->canceled"
+    ],
+    "replies": [
+     "好的，退款申请就不办了。如果之后还想处理，跟我说一声就行。"
+    ]
+   },
+   {
+    "idx": 3,
+    "text": "查下 A20260408002 的物流",
+    "action": "start",
+    "flow_id": "logistics_tracking",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确要求查询订单 A20260408002 的物流信息，属于物流查询业务流程，且订单号已提供。",
+    "transitions": [
+     "logistics_tracking:new->active",
+     "logistics_tracking:active->done"
+    ],
+    "replies": [
+     "订单 A20260408002 由顺丰速运配送，运单号 SF1234567890。当前进度：运输中（最新：快件已到达上海转运中心）。"
+    ]
+   }
+  ],
+  "route_hits": 3,
+  "route_total": 3,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 3.8117492999881506
+ },
+ {
+  "id": "s16",
+  "group": "business_failure",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "给 A20260409004 申请退款，原因质量不好",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确提供了订单号和退款原因，要求申请退款，符合 refund_request 流程",
+    "transitions": [
+     "refund_request:new->active",
+     "refund_request:active->failed（action_submit_refund 失败）"
+    ],
+    "replies": [
+     "订单 A20260409004 已经有一笔退款在审核里了，不用重复提交。审核结果会短信通知你。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 2.378973599988967
+ },
+ {
+  "id": "s17",
+  "group": "business_failure",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "催一下 A20260407005 发货",
+    "action": "start",
+    "flow_id": "shipping_reminder",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确提到订单号 A20260407005 并要求催发货，符合 shipping_reminder 流程的触发条件",
+    "transitions": [
+     "shipping_reminder:new->active",
+     "shipping_reminder:active->failed（action_create_shipping_reminder 失败）"
+    ],
+    "replies": [
+     "订单当前状态为“待付款”，不适合发起发货提醒。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 1.7216246000025421
+ },
+ {
+  "id": "s18",
+  "group": "business_failure",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "查下 A20260403006 的物流",
+    "action": "start",
+    "flow_id": "logistics_tracking",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确提供了订单号并要求查询物流，符合物流查询流程",
+    "transitions": [
+     "logistics_tracking:new->active",
+     "logistics_tracking:active->failed（action_lookup_logistics 失败）"
+    ],
+    "replies": [
+     "这个订单还没有物流信息，可能是还没发货。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 1.495173099974636
+ },
+ {
+  "id": "s19",
+  "group": "policy",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "退货的运费谁出",
+    "action": "answer",
+    "flow_id": "",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户询问退款相关规则，但未提供订单号，属于纯政策类问题，应选择 answer",
+    "transitions": [],
+    "replies": [
+     "无理由退货的运费由买家承担；如果是商品质量问题或错发漏发，运费由商家承担。  \n买了运费险的话，退货时会按保额自动理赔，超出部分得您自己补。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 2.194935000035912
+ },
+ {
+  "id": "s20",
+  "group": "policy",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "退款多久能到账",
+    "action": "answer",
+    "flow_id": "",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户询问退款到账时间，属于规则类问题，不涉及具体订单号，无需启动业务流程",
+    "transitions": [],
+    "replies": [
+     "退款到账时间取决于支付方式：支付宝和微信支付1~3个工作日，银行卡3~7个工作日，余额支付是实时到账。  \n审核通过后就会开始处理，具体到账时间以实际为准。  \n如果还没到账，可以查下是否还在审核中哦。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 2.952738900028635
+ },
+ {
+  "id": "s21",
+  "group": "policy",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "可以开发票吗",
+    "action": "answer",
+    "flow_id": "",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户询问开发票的政策，属于规则类问题，不涉及具体订单或商品，无需启动业务流程",
+    "transitions": [],
+    "replies": [
+     "可以开发票，支持电子普通发票和增值税专用发票两种类型。  \n下单时就能选择开哪种发票，电子发票会在订单完成后24小时内发到您预留的邮箱。  \n如果需要专票，记得提前提供完整的开票资料哦。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 2.4270579000003636
+ },
+ {
+  "id": "s22",
+  "group": "policy",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "下单之后多久发货",
+    "action": "answer",
+    "flow_id": "",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户询问的是发货时间规则，属于政策类问题，不涉及具体订单号，因此选择 answer。",
+    "transitions": [],
+    "replies": [
+     "现货商品付款后24小时内发货，大促期间会顺延到48小时；预售商品则按商品页标注的时间发货。如果超时没发，可以去订单页催发货或联系客服申请补偿。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 2.3447507999953814
+ },
+ {
+  "id": "s23",
+  "group": "policy",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "商品有质量问题怎么处理",
+    "action": "answer",
+    "flow_id": "",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户询问商品有质量问题的处理方式，属于规则类问题，不涉及具体订单或商品号，无需启动业务流程",
+    "transitions": [],
+    "replies": [
+     "签收15天内出现性能故障，可以换货或免费维修；超过15天但在保修期内的，按品牌售后政策安排维修。如果需要检测，确认是人为损坏就不予免费维修了。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 2.3539118000189774
+ },
+ {
+  "id": "s24",
+  "group": "handoff",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "转人工",
+    "action": "handoff",
+    "flow_id": "human_handoff",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确要求转人工客服",
+    "transitions": [
+     "human_handoff:active->done"
+    ],
+    "replies": [
+     "好的，我这就帮你转接人工客服，同时把前面的对话摘要一并转过去，你不用再重复一遍。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": true,
+  "elapsed": 0.5356030000257306
+ },
+ {
+  "id": "s25",
+  "group": "handoff",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "你们这服务太差了，我要投诉",
+    "action": "handoff",
+    "flow_id": "human_handoff",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确表达投诉意愿，情绪激烈，符合转人工条件",
+    "transitions": [
+     "human_handoff:active->done"
+    ],
+    "replies": [
+     "好的，我这就帮你转接人工客服，同时把前面的对话摘要一并转过去，你不用再重复一遍。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": true,
+  "elapsed": 0.7700664000003599
+ },
+ {
+  "id": "s26",
+  "group": "clarify",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "今天天气怎么样",
+    "action": "chitchat",
+    "flow_id": "",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户询问天气，属于与业务无关的闲聊",
+    "transitions": [],
+    "replies": [
+     "我这边看不到实时天气呢，建议您查一下当地天气预报～"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 1.3813730999827385
+ },
+ {
+  "id": "s27",
+  "group": "clarify",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "帮我订一张去上海的高铁票",
+    "action": "handoff",
+    "flow_id": "human_handoff",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户请求订高铁票，超出电商客服系统处理范围，需转人工",
+    "transitions": [
+     "human_handoff:active->done"
+    ],
+    "replies": [
+     "好的，我这就帮你转接人工客服，同时把前面的对话摘要一并转过去，你不用再重复一遍。"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": true,
+  "elapsed": 0.833734399988316
+ },
+ {
+  "id": "s28",
+  "group": "clarify",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "那个啥来着 就是那个东西",
+    "action": "clarify",
+    "flow_id": "",
+    "source": "llm",
+    "confidence": 0.3,
+    "reason": "用户表述模糊，无法确定具体意图或涉及的订单/商品信息",
+    "transitions": [],
+    "replies": [
+     "这个我暂时处理不了，马上帮您转人工客服！"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 1.3938613000209443
+ },
+ {
+  "id": "s29",
+  "group": "object",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "[点卡片]",
+    "action": "start",
+    "flow_id": "product_inquiry",
+    "source": "object",
+    "confidence": 1.0,
+    "reason": "点击商品卡片",
+    "transitions": [
+     "product_inquiry:new->active",
+     "product_inquiry:active->done"
+    ],
+    "replies": [
+     "参数：材质 TPU，适配机型 星耀 X50；库存状态：有货。",
+     "星耀 X50 手机壳，价格 59.00 元。想看看同类的其它选择吗？"
+    ]
+   }
+  ],
+  "route_hits": 1,
+  "route_total": 1,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 0.6422231000033207
+ },
+ {
+  "id": "s30",
+  "group": "object",
+  "variant": "llm",
+  "turns": [
+   {
+    "idx": 1,
+    "text": "[点卡片]",
+    "action": "start",
+    "flow_id": "order_status_query",
+    "source": "object",
+    "confidence": 1.0,
+    "reason": "点击订单卡片",
+    "transitions": [
+     "order_status_query:new->active",
+     "order_status_query:active->done"
+    ],
+    "replies": [
+     "订单 A20260409004 当前状态是「已完成」。共 1 件商品，金额 399.00 元，下单时间 2026-04-09。订单已签收完成。"
+    ]
+   },
+   {
+    "idx": 2,
+    "text": "我要给这个退款",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户明确表示要为当前订单（A20260409004）申请退款，属于业务流程，且订单号已知，直接启动 refund_request 流程。",
+    "transitions": [
+     "refund_request:new->active"
+    ],
+    "replies": [
+     "请简单说一下退款原因，方便审核。"
+    ]
+   },
+   {
+    "idx": 3,
+    "text": "质量不好",
+    "action": "start",
+    "flow_id": "refund_request",
+    "source": "llm",
+    "confidence": 0.95,
+    "reason": "用户在当前退款申请流程中，已提供订单号和退款原因，符合业务流程要求，应继续提交",
+    "transitions": [
+     "refund_request:active->active（补槽）",
+     "refund_request:active->failed（action_submit_refund 失败）"
+    ],
+    "replies": [
+     "订单 A20260409004 已经有一笔退款在审核里了，不用重复提交。审核结果会短信通知你。"
+    ]
+   }
+  ],
+  "route_hits": 3,
+  "route_total": 3,
+  "failures": [],
+  "final_ok": true,
+  "success": true,
+  "handoff": false,
+  "elapsed": 4.160228300024755
+ }
+]
